@@ -10,6 +10,8 @@ def backtrack(game):
                     return True
                 game[row][column] = 0
         return False
+    solve()
+    return (game)
             
 
 def valid(game, row, column, value):

@@ -20,7 +20,7 @@ def generateGame(difficulty: int):
     print(numValuesOpen)
 
     # Create an empty grid (9x9)
-    emptyGame = [[0 for i in range(9)] for x in range(9)]
+    emptyGame: list[list[int]] = [[0 for i in range(9)] for x in range(9)]
 
     # Fill in the larger diagonals (the top lef 3x3, middle 3x3 and bottom right 3x3)
     # these squares 3x3 squares don't interact with each other on the lines or columns so
@@ -41,17 +41,17 @@ def generateGame(difficulty: int):
     solvableGame = removeValues(solvedGame, numValuesOpen)
     return solvableGame
 
-def removeValues(game, numEmpty):
+def removeValues(game: list[list[int]], numEmpty: int):
     for i in range(numEmpty):
-        row = random.randint(0, 8)
-        column = random.randint(0, 8)
-        while (game[row][column] == 0):
+        row: int = random.randint(0, 8)
+        column: int = random.randint(0, 8)
+        while game[row][column] == 0:
             row = random.randint(0, 8)
             column = random.randint(0, 8)
         game[row][column] = 0
     return game
 
-def printGame(game):
+def printGame(game: list[list[int]]):
     for row in game:
         print(" ".join(map(str, row)))
 
