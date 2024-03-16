@@ -1,5 +1,5 @@
 import random
-import BacktrackSearch
+from BacktrackSearch import *
 
 def generateGame(difficulty: int):
     # 4 difficulty levels (1-4)
