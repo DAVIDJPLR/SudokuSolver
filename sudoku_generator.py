@@ -1,7 +1,7 @@
 # !/usr/bin/python
 import sys
 from Sudoku.Generator import *
-from ExactCoverSolver import ExactCoverSolver
+# from ExactCoverSolver import ExactCoverSolver
 
 # setting difficulties and their cutoffs for each solve method
 difficulties = {
@@ -40,18 +40,3 @@ print("The initial board before removals was: \r\n\r\n{0}".format(initial))
 
 # printing out board after reduction
 print("The generated board after removals was: \r\n\r\n{0}\n\n".format(final))
-
-# print(final.rows.items())
-# for r in range(0, len(final.rows)):
-#     for c in range(0, len(final.columns)):
-#         print(final[r][c] + " ")
-
-# for cell in final.cells:
-#     print(cell)
-# print(final.get_matrix())
-solver = ExactCoverSolver(final.get_matrix())
-solution = solver.solve()
-# print(solution)
-solver.print_solution()
-
-# print(final.get_matrix())
