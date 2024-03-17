@@ -48,10 +48,10 @@ print("The generated board after removals was: \r\n\r\n{0}\n\n".format(final))
 
 # for cell in final.cells:
 #     print(cell)
-print(final.get_matrix())
+# print(final.get_matrix())
 solver = ExactCoverSolver(final.get_matrix())
 solution = solver.solve()
-print(solution)
-# solver.print_solution()
+# print(solution)
+solver.print_solution()
 
 # print(final.get_matrix())
