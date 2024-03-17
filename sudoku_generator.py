@@ -2,6 +2,7 @@
 import sys
 from Sudoku.Generator import *
 # from ExactCoverSolver import ExactCoverSolver
+from completed.sudoku_solve import *
 
 # setting difficulties and their cutoffs for each solve method
 difficulties = {
@@ -39,4 +40,11 @@ final = gen.board.copy()
 print("The initial board before removals was: \r\n\r\n{0}".format(initial))
 
 # printing out board after reduction
-print("The generated board after removals was: \r\n\r\n{0}\n\n".format(final))
+# print("The generated board after removals was: \r\n\r\n{0}\n\n".format(final))
+
+# print(final.get_list())
+# print(lts)
+
+print_puzzle(solve_puzzle(final.get_list()))
+
+# print(final.get_matrix())
