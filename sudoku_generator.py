@@ -43,14 +43,11 @@ if difficulty[1] != 0:
 final = gen.board.copy()
 
 # printing out complete board (solution)
-print("The initial board before removals was: \r\n\r\n{0}\n\n".format(initial))
+# print("The initial board before removals was: \r\n\r\n{0}\n\n".format(initial))
 
 # printing out board after reduction
-print("The generated board after removals was: \r\n\r\n{0}\n\n".format(final))
+print("Unsolved board: \r\n\r{0}\n\n".format(final))
 
-board = final.get_list()
+sol = matrix_to_board(DLX(final.get_list()).search())
 
-dlx = DLX(board)
-rows = dlx.search()
-
-print(matrix_to_board(rows))
+print("Solution: \r\n\r\n{0}\n\n".format(sol))
