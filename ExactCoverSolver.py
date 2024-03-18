@@ -6,6 +6,8 @@ https://www.geeksforgeeks.org/implementation-of-exact-cover-problem-and-algorith
 https://en.wikipedia.org/wiki/Exact_cover#Sudoku
 https://en.wikipedia.org/wiki/Knuth%27s_Algorithm_X
 https://en.wikipedia.org/wiki/Dancing_Links
+
+@author Bryce Behr
 """
 
 
