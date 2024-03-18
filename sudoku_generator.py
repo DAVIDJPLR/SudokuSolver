@@ -66,7 +66,9 @@ def runExactCover(difficulty, v: int=0):
         openCells=len(board.get_unused_cells())
         if v == 1 or v == 2 or v == 3: 
             print("Board " + str(i+1) + " unsolved: " + "\r\r\n{0}\n".format(board))
-        searchBoard = DLX(board.get_list())
+
+        if v == 3 : searchBoard = DLX(board.get_list(), 3)
+        else: searchBoard = DLX(board.get_list())
         sol = matrix_to_board(searchBoard.search())
         print("Board " + str(i+1) + " solved: " + "\r\r\n{0}".format(sol))
 
@@ -79,8 +81,9 @@ def runExactCover(difficulty, v: int=0):
 
         print("\n\n")
 
-    print("Average nodes visited: " + str(avergeNodesAssigned/7))
-    print("Average fraction: " + str(averageFraction/7))
+    if v == 2:
+        print("Average nodes visited: " + str(avergeNodesAssigned/7))
+        print("Average fraction: " + str(averageFraction/7))
     
 if __name__ == '__main__':
 # setting difficulties and their cutoffs for each solve method
