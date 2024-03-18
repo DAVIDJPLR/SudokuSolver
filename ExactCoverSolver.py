@@ -1,6 +1,8 @@
 from __future__ import annotations
 from typing import Generator
 
+from Sudoku.Board import Board
+
 # standard node class which can link 4 directions and can carry a counter
 class Node:
     def __init__(self, row: int, col: int, up: Node=None, down: Node=None, left: Node=None, right: Node=None, count: int=1):
@@ -74,7 +76,7 @@ constraint_list = [valConstraint, rowConstraint, colConstraint, boxConstraint]
 # this is the primary class for the dancing links matrix
 class DLX:
     # constructor
-    def __init__(self, board: list[int]):
+    def __init__(self, board: list[int], v: int=0):
         self.numRows = 9**3
         self.numCols = 9**2 * 4
 
@@ -83,6 +85,7 @@ class DLX:
         self.colHeader: list[Node] = [Node(-1, i) for i in range(self.numCols)]
         self.rowHeader: list[Node] = [Node(i, -1) for i in range(self.numRows)]
 
+        self.verbosity = v
         self.nodesExplored: int = 0
         self.solved: bool = False
 
@@ -225,6 +228,28 @@ class DLX:
                     if sol_node.col >= 0: self.cover(sol_node)
 
                 self.nodesExplored += 1
+
+                if self.verbosity == 3:
+                    # recover solution values
+                    solution = [0] * 81
+                    for row in solutions:
+                        solution[int(row / 9)] = (row % 9) + 1
+
+                    # send to matrix form for return
+                    mat: list[list[int]] = [[0 for i in range(9)] for i in range(9)]
+                    for r in range(len(mat)):
+                        for c in range(len(mat[0])):
+                            mat[r][c] = solution[9*r + c]
+
+                    b = Board()
+                    for row in range(0, len(mat)):
+                        for col in range(0, len(mat[0])):
+                            b.rows[row][col].value = mat[row][col]
+
+                    print("Stepping through: " + "\r\r\n{0}\n".format(b))
+
+                    print(b)
+                    print("\n")
 
                 # recurse and break if solution found
                 if helper(): break
