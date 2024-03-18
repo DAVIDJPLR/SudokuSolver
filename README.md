@@ -9,7 +9,7 @@ Verbosity 3 prints out the sudoku board everytime the AI makes a change to the b
 
 
 ## How to use
-usage example: py main.py <algorithm> <difficulty> <verbosity>
+usage example: py main.py algorithm difficulty verbosity
 
 algorithm usages: backtrack, exactcover
 
