@@ -1,5 +1,4 @@
 from __future__ import annotations
-from math import sqrt
 from typing import Generator
 
 # standard node class which can link 4 directions and can carry a counter
@@ -121,65 +120,88 @@ class DLX:
                 for constraint in constraint_list:
                         self.addNode(row, constraint(row))
 
-
+    # this def adds a node to the proper colHeader and rowHeader list and
+    # and links it to its neighbors
     def addNode(self, row: int, col: int):
         newNode: Node = Node(row, col)
         
-        n = self.root
-        for n in self.rowHeader[row].loopRight(excl=False):
-            if n.right.col == -1 or n.right.col > col: break
-        if n.col == col: return
-        newNode.right      = n.right
-        newNode.left       = n
+        # link row to left and right neighbors / put it in the row
+        node = self.root
+        for node in self.rowHeader[row].loopRight(excl=False):
+            if node.right.col == -1 or node.right.col > col: break
+        if node.col == col: return
+        newNode.right = node.right
+        newNode.left = node
         newNode.right.left = newNode
-        n.right             = newNode
+        node.right = newNode
 
-        for n in self.colHeader[col].loopDown(excl=False):
-            if n.down.row == -1 or n.down.row > row: break
-        newNode.down    = n.down
-        newNode.up      = n
+        # link row to top and bottom neighbors / put it in the column
+        for node in self.colHeader[col].loopDown(excl=False):
+            if node.down.row == -1 or node.down.row > row: break
+        newNode.down = node.down
+        newNode.up = node
         newNode.down.up = newNode
-        n.down           = newNode
+        node.down = newNode
         self.colHeader[col].count += 1
 
+    # cover this node and corresponding rows and columns from DLX
+    # this effectively unlinks the node and hides it but it is recoverable
     def cover(self, node: Node) -> None:
+        # get the col header node
         if node.col == -1: col = self.root
         else: col = self.colHeader[node.col]
 
+        # unlink the col header horizontally
         col.right.left = col.left
         col.left.right = col.right
-        for col_itr in col.loopDown():
-            for row_itr in col_itr.loopRight():
-                row_itr.up.down = row_itr.down
-                row_itr.down.up = row_itr.up
 
-                if node.col == -1: row = self.root
-                else: row = self.colHeader[node.col]
-                row.count -= 1
+        # unlink all nodes in any row in this columns
+        # get each node in column
+        for colLoop in col.loopDown():
+            # get each node in corresponding rows
+            for rowLoop in colLoop.loopRight():
+                # vertically unlink
+                rowLoop.up.down = rowLoop.down
+                rowLoop.down.up = rowLoop.up
+                # dec header count
+                if rowLoop.col == -1: colHead = self.root
+                else: colHead = self.colHeader[rowLoop.col]
+                colHead.count -= 1
 
     def uncover(self, node: Node) -> None:
+        # get the column header
         if node.col == -1: col = self.root
         else: col = self.colHeader[node.col]
-        for col_itr in col.loopUp():
-            for row_itr in col_itr.loopLeft():
-                row_itr.up.down = row_itr
-                row_itr.down.up = row_itr
 
-                if node.col == -1: row = self.root
-                else: row = self.colHeader[node.col]
-                row.count += 1
+        # relink this node and all corresponding
+        # iterate through column nodes
+        for colLoop in col.loopUp():
+            # iterate through corresponding rows
+            for rowLoop in colLoop.loopLeft():
+                # relink vertically
+                rowLoop.up.down = rowLoop
+                rowLoop.down.up = rowLoop
+                # inc header count
+                if rowLoop.col == -1: colHead = self.root
+                else: colHead = self.colHeader[rowLoop.col]
+                colHead.count += 1
+
+        # relink horizontally
         col.right.left = col
         col.left.right = col
     
+    # this is the main search method
     def search(self) -> list[int]:
         solutions = []
         
+        # this is the main recursive loop
         def helper() -> bool:
-            if self.is_empty():
+            # If the matrix A has no columns, the current partial solution is a valid solution; terminate successfully.
+            if self.root.right == self.root:
                 self.solved = True
                 return True
 
-            if self.is_empty(): return self.root
+            # Otherwise choose a column c (deterministically via min column)
             minCol  = self.root.right
             minCount = self.root.right.count
             for col in self.root.loopRight():
@@ -187,32 +209,38 @@ class DLX:
                     minCol  = col
                     minCount = col.count
 
+            # min count is 0 so backtrack
             if minCol.count < 1 : return False
 
-            for col_itr in minCol.loopDown():
-                solutions.append(col_itr.row)
-                for sol_node in col_itr.loopRight(excl=False):
+
+            for colLoop in minCol.loopDown():
+                # Include row r in the partial solution
+                solutions.append(colLoop.row)
+                # delete rows and cols from matrix
+                for sol_node in colLoop.loopRight(excl=False):
                     if sol_node.col >= 0: self.cover(sol_node)
 
+                # recurse and break if solution found
                 if helper(): break
 
+                # solution is not found so revert algo
                 solutions.pop()
-                for sol_node in col_itr.left.loopLeft(excl=False):
+                # uncover attempted solution row
+                for sol_node in colLoop.left.loopLeft(excl=False):
                     if sol_node.col >= 0: self.uncover(sol_node)
             return self.solved
 
         helper()
 
+        # recover solution values
         solution = [0] * 81
         for row in solutions:
             solution[int(row / 9)] = (row % 9) + 1
 
+        # send to matrix form for return
         mat: list[list[int]] = [[0 for i in range(9)] for i in range(9)]
         for r in range(len(mat)):
             for c in range(len(mat[0])):
                 mat[r][c] = solution[9*r + c]
         
         return mat
-
-    def is_empty(self) -> bool:
-        return self.root.right == self.root
