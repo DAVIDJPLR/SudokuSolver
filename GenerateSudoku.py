@@ -1,62 +1,32 @@
-import random
-from BacktrackSearch import *
+import sys
+from Sudoku.Generator import *
 
-def generateGame(difficulty: int):
-    # 4 difficulty levels (1-4)
-    numValuesOpen: int
+def generateSudoku(difficultyLevel):
 
-    if (difficulty == 1):
-        numValuesOpen = 40
-    elif (difficulty == 2):
-        numValuesOpen = 48
-    elif (difficulty == 3):
-        numValuesOpen = 52
-    elif (difficulty == 4):
-        numValuesOpen = 59
-    else:
-        print("difficulty level must be betwwen 1 and 4")
-        return
-    
-    print(numValuesOpen)
+    difficulties = {
+        'easy': (35, 0),
+        'medium': (81, 5),
+        'hard': (81, 10),
+        'extreme': (81, 15)
+    }
 
-    # Create an empty grid (9x9)
-    emptyGame: list[list[int]] = [[0 for i in range(9)] for x in range(9)]
+    difficulty = difficulties[difficultyLevel]
 
-    # Fill in the larger diagonals (the top lef 3x3, middle 3x3 and bottom right 3x3)
-    # these squares 3x3 squares don't interact with each other on the lines or columns so
-    # we can just fill them with random numbers as long as they dont repeat
-    for i in range (0, 9, 3):
-        possibleValues = list(range(1, 10))
-        random.shuffle(possibleValues)
-        for x in range(3):
-            for y in range(3):
-                emptyGame[i+x][i+y] = possibleValues.pop()
+    gen = Generator('base.txt')
 
-    # Print current boad just for testing purposes
-    print("============================")
-    printGame(emptyGame)
-    print("============================")
+    gen.randomize(100)
 
-    solvedGame = backtrack(emptyGame)
-    solvableGame = removeValues(solvedGame, numValuesOpen)
-    return solvableGame
+    initial = gen.board.copy()
 
-def removeValues(game: list[list[int]], numEmpty: int):
-    for i in range(numEmpty):
-        row: int = random.randint(0, 8)
-        column: int = random.randint(0, 8)
-        while game[row][column] == 0:
-            row = random.randint(0, 8)
-            column = random.randint(0, 8)
-        game[row][column] = 0
-    return game
+    gen.reduce_via_logical(difficulty[0])
 
-def printGame(game: list[list[int]]):
-    for row in game:
-        print(" ".join(map(str, row)))
+    if difficulty[1] != 0:
+        gen.reduce_via_random(difficulty[1])
 
-def main():
-    printGame(generateGame(1))
+    final = gen.board.copy()
 
-# Example usage: generate a Sudoku with 40 open squares
-main()
+    # print("The initial board before removals was: \r\n\r\n{0}".format(initial))
+
+    # print("The generated board after removals was: \r\n\r\n{0}".format(final))
+
+    return(final)
