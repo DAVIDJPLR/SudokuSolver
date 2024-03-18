@@ -83,6 +83,7 @@ class DLX:
         self.colHeader: list[Node] = [Node(-1, i) for i in range(self.numCols)]
         self.rowHeader: list[Node] = [Node(i, -1) for i in range(self.numRows)]
 
+        self.nodesExplored: int = 0
         self.solved: bool = False
 
         # link the nodes in the row header (end nodes link to themselves rather than None)
@@ -119,6 +120,9 @@ class DLX:
                 row = i*9+cell-1
                 for constraint in constraint_list:
                         self.addNode(row, constraint(row))
+
+    def getNodesExplored(self):
+        return self.nodesExplored
 
     # this def adds a node to the proper colHeader and rowHeader list and
     # and links it to its neighbors
@@ -220,6 +224,8 @@ class DLX:
                 for sol_node in colLoop.loopRight(excl=False):
                     if sol_node.col >= 0: self.cover(sol_node)
 
+                self.nodesExplored += 1
+
                 # recurse and break if solution found
                 if helper(): break
 
@@ -227,6 +233,7 @@ class DLX:
                 solutions.pop()
                 # uncover attempted solution row
                 for sol_node in colLoop.left.loopLeft(excl=False):
+                    # print("hellloooo")
                     if sol_node.col >= 0: self.uncover(sol_node)
             return self.solved
 
