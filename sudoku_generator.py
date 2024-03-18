@@ -1,3 +1,5 @@
+# this is the main Bryce used to test exact cover
+
 # !/usr/bin/python
 import sys
 from Sudoku.Generator import *

@@ -1,6 +1,8 @@
-""""
+"""
 https://www.geeksforgeeks.org/introduction-to-exact-cover-problem-and-algorithm-x/?ref=ml_lbp
 https://www.geeksforgeeks.org/implementation-of-exact-cover-problem-and-algorithm-x-using-dlx/?ref=ml_lbp
+^^ pseudocode used from this page ^^
+
 https://en.wikipedia.org/wiki/Exact_cover#Sudoku
 https://en.wikipedia.org/wiki/Knuth%27s_Algorithm_X
 https://en.wikipedia.org/wiki/Dancing_Links
