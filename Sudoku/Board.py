@@ -113,22 +113,9 @@ class Board:
     def get_matrix(self):
         matrix = [[self.rows[row][column].value for column in range(0, len(self.columns))] for row in range(0, len(self.rows))]
         return matrix
-        # b = [len(self.rows)][len(self.columns)]
-        # for row in range(0, len(self.rows)):
-        #     for col in range(0, len(self.columns)):
-        #         b.rows[row][col].value = self.rows[row][col].value
-        # return b
     
     def get_list(self):
         return [self.rows[row][column].value for row in range(0, len(self.columns)) for column in range(0, len(self.rows))]
-
-        # lst = []
-        # matrix = self.get_matrix()
-        # for r in range(0, len(matrix[0])):
-        #     for c in range(0, len(matrix[0])):
-        #         lst.append(matrix[r][c])
-
-        return lst
 
     # returns string representation
     def __str__(self):

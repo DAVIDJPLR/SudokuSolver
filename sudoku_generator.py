@@ -1,7 +1,7 @@
 # !/usr/bin/python
 import sys
 from Sudoku.Generator import *
-# from ExactCoverSolver import ExactCoverSolver
+from ExactCoverSolver import DLX
 from completed.sudoku_solve import *
 
 # setting difficulties and their cutoffs for each solve method
@@ -45,6 +45,10 @@ print("The initial board before removals was: \r\n\r\n{0}".format(initial))
 # print(final.get_list())
 # print(lts)
 
-print_puzzle(solve_puzzle(final.get_list()))
+# print_puzzle(solve_puzzle(final.get_matrix()))
 
 # print(final.get_matrix())
+
+board = final.get_list()
+print(len(final.get_list()))
+dlx = DLX(board, 9)
