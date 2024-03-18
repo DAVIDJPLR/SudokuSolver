@@ -1,6 +1,7 @@
 import sys
 from GenerateSudoku import *
 from BacktrackSolver import *
+from sudoku_generator import runExactCover
 
 try:
     algo = sys.argv[1]
@@ -10,7 +11,7 @@ try:
     if (algo == "backtrack"):
         runBacktrack(difficulty, verbosity)
     elif (algo == "exactcover"):
-        print("exactcover")
+        runExactCover(difficulty, verbosity)
     else:
         print("Incorrect arguments, usage example: py main.py algorithm difficulty verbosity")
         print("algorithm usages: backtrack, exactcover")
