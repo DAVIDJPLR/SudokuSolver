@@ -109,7 +109,7 @@ class Board:
             for col in range(0, len(self.columns)):
                 b.rows[row][col].value = self.rows[row][col].value
         return b
-    
+
     def get_matrix(self):
         matrix = [[self.rows[row][column].value for column in range(0, len(self.columns))] for row in range(0, len(self.rows))]
         return matrix
@@ -123,7 +123,6 @@ class Board:
             for col in range(0, len(self.columns)):
                 b.rows[row][col].value = self.rows[row][col].value
         return b
-        
 
     # returns string representation
     def __str__(self):
