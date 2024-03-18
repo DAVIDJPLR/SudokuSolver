@@ -2,7 +2,6 @@
 import sys
 from Sudoku.Generator import *
 from ExactCoverSolver import DLX
-from completed.sudoku_solve import *
 
 def matrix_to_board(lst: list[list[int]]):
     b = Board()
