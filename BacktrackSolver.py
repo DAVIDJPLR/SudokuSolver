@@ -1,3 +1,8 @@
+"""
+    pseudo code from slides were used
+    @author David Le Roux
+"""
+
 import sys
 from GenerateSudoku import *
 from BacktrackSolver import *
