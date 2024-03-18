@@ -4,8 +4,10 @@ from BacktrackSolver import *
 from Sudoku.Generator import *
 
 def runBacktrack(difficultylevel, verbosity: int):
+    # Get a sudoku problem of the appropriate difficulty level from the sudoku generator
     unsolved: Board = generateSudoku(difficultylevel)
 
+    # get a solved sudoku problem from the backtrack method
     results = backtrack(unsolved, verbosity)
     solved = results[0]
     visitedNodes = results[1]
@@ -29,11 +31,15 @@ def backtrack(board: Board, verbosity: int):
     print("The original unsolved sudoku puzzle is: \r\r\n{0}".format(board) + "\n")
 
     def solve():
+        # Gets a list of 'unused celld' from th eboard, these cells all have a value of 0
         openCells = board.get_unused_cells()
+        # If there are no more open cells then you have a solution
         if len(openCells) == 0:
             return True
+        # Gets the next open cell to assign a value to
         cell = openCells[0]
         for number in range(1, 10):
+            #look at every possible value for the cell but only assign it if it is valid
             if valid(board, cell, number):
                 nodesVisited[0] += 1
                 cell.value = number
@@ -41,8 +47,10 @@ def backtrack(board: Board, verbosity: int):
                 if verbosity == 3:
                     print("Changing value of (" + str(cell.row) + "," + str(cell.col) + ") to " + str(number) + ": \r\r\n{0}".format(board) + "\n")
 
+                # Send the recursive functions return value back down the recursive calls
                 if solve():
                     return True
+                # Backtrack if the previous value did not return True
                 cell.value = 0
 
                 if verbosity == 3:
@@ -52,6 +60,7 @@ def backtrack(board: Board, verbosity: int):
 
     print("The solved sudoku puzzule is: \r\r\n{0}".format(board) + "\n")
 
+    # returns the solved board, the number of nodes visited, and the number of originally open squares
     return [board, nodesVisited[0], numOpenVals]
 
 def valid(board: Board, cell: Cell, number: int):
