@@ -1,3 +1,8 @@
+"""
+@source https://github.com/RutledgePaulV/sudoku-generator
+@author 
+"""
+
 from Sudoku.Cell import Cell
 
 

@@ -1,3 +1,8 @@
+"""
+@source https://github.com/RutledgePaulV/sudoku-generator
+@author 
+"""
+
 class Cell:
 
     # defining the cell, each cell keeps track of its own value and location
