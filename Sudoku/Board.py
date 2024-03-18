@@ -117,6 +117,14 @@ class Board:
     def get_list(self):
         return [self.rows[row][column].value for row in range(0, len(self.columns)) for column in range(0, len(self.rows))]
 
+    def matrix_to_board(self, lst: list[list[int]]):
+        b = Board()
+        for row in range(0, len(self.rows)):
+            for col in range(0, len(self.columns)):
+                b.rows[row][col].value = self.rows[row][col].value
+        return b
+        
+
     # returns string representation
     def __str__(self):
         output = []

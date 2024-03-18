@@ -4,6 +4,13 @@ from Sudoku.Generator import *
 from ExactCoverSolver import DLX
 from completed.sudoku_solve import *
 
+def matrix_to_board(lst: list[list[int]]):
+    b = Board()
+    for row in range(0, len(lst)):
+        for col in range(0, len(lst[0])):
+            b.rows[row][col].value = lst[row][col]
+    return b
+
 # setting difficulties and their cutoffs for each solve method
 difficulties = {
     'easy': (35, 0), 
@@ -37,18 +44,14 @@ if difficulty[1] != 0:
 final = gen.board.copy()
 
 # printing out complete board (solution)
-print("The initial board before removals was: \r\n\r\n{0}".format(initial))
+print("The initial board before removals was: \r\n\r\n{0}\n\n".format(initial))
 
 # printing out board after reduction
-# print("The generated board after removals was: \r\n\r\n{0}\n\n".format(final))
-
-# print(final.get_list())
-# print(lts)
-
-# print_puzzle(solve_puzzle(final.get_matrix()))
-
-# print(final.get_matrix())
+print("The generated board after removals was: \r\n\r\n{0}\n\n".format(final))
 
 board = final.get_list()
-print(len(final.get_list()))
-dlx = DLX(board, 9)
+
+dlx = DLX(board)
+rows = dlx.search()
+
+print(matrix_to_board(rows))
